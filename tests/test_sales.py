@@ -46,3 +46,13 @@ def test_register_sale_quantita_insufficiente():
 def test_register_sale_prodotto_inesistente():
     with pytest.raises(ValueError):
         register_sale(9999, 1)
+
+
+def test_register_sale_quantita_non_positiva():
+    product_id = add_product("iPhone 13", "Smartphone", 699.99, 10)
+
+    with pytest.raises(ValueError):
+        register_sale(product_id, 0)
+
+    rows = list_inventory()
+    assert rows[0][4] == 10

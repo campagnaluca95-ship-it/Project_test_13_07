@@ -55,3 +55,24 @@ def test_list_inventory_piu_prodotti():
 
     rows = list_inventory()
     assert len(rows) == 2
+
+
+def test_add_product_nome_vuoto():
+    with pytest.raises(ValueError):
+        add_product("", "Smartphone", 699.99, 10)
+
+
+def test_add_product_prezzo_non_positivo():
+    with pytest.raises(ValueError):
+        add_product("iPhone 13", "Smartphone", 0, 10)
+
+
+def test_add_product_quantita_negativa():
+    with pytest.raises(ValueError):
+        add_product("iPhone 13", "Smartphone", 699.99, -1)
+
+
+def test_update_quantity_negativa():
+    product_id = add_product("iPhone 13", "Smartphone", 699.99, 10)
+    with pytest.raises(ValueError):
+        update_quantity(product_id, -1)

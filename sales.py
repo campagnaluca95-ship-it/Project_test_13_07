@@ -2,6 +2,9 @@ from db import get_connection
 
 
 def register_sale(product_id, quantita):
+    if quantita <= 0:
+        raise ValueError("La quantita venduta deve essere maggiore di zero")
+
     conn = get_connection()
     try:
         with conn.cursor() as cur:
