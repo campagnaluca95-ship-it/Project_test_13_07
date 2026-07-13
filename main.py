@@ -1,11 +1,13 @@
 from inventory import add_product, list_inventory, update_quantity
+from sales import register_sale
 
 MENU = """
 --- Mobile Shop Inventory ---
 1. Aggiungi prodotto
 2. Aggiorna quantita
 3. Elenca inventario
-4. Esci
+4. Registra vendita
+5. Esci
 """
 
 
@@ -35,6 +37,13 @@ def menu_list_inventory():
         print(f"[{product_id}] {nome} - {categoria} - {prezzo} EUR - qta: {quantita}")
 
 
+def menu_register_sale():
+    product_id = int(input("ID prodotto: "))
+    quantita = int(input("Quantita venduta: "))
+    sale_id = register_sale(product_id, quantita)
+    print(f"Vendita registrata con id {sale_id}")
+
+
 def main():
     while True:
         print(MENU)
@@ -47,6 +56,8 @@ def main():
             elif scelta == "3":
                 menu_list_inventory()
             elif scelta == "4":
+                menu_register_sale()
+            elif scelta == "5":
                 break
             else:
                 print("Scelta non valida")
