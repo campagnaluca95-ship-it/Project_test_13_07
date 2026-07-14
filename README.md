@@ -50,3 +50,16 @@ I test usano un database Postgres di test (connessione letta da `.env`) e pulisc
 ```bash
 pytest
 ```
+
+## CI Pipeline
+
+La pipeline definita in `.github/workflows/ci.yml` gira su push/PR verso `main` e `feat`:
+
+| Step | Descrizione |
+|------|-------------|
+| Checkout | Scarica il codice del repository |
+| Setup Python | Installa Python 3.12 |
+| Install dependencies | Installa le dipendenze da `requirements.txt` |
+| Servizio Postgres | Avvia un container Postgres 16 di supporto |
+| Apply database schema | Applica `schema.sql` al database di test |
+| Run tests | Esegue `pytest` |

@@ -1,0 +1,54 @@
+name: CI
+
+on:
+  push:
+    branches: [main, feat]
+  pull_request:
+    branches: [main, feat]
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+
+    services:
+      postgres:
+        image: postgres:16
+        env:
+          POSTGRES_USER: postgres
+          POSTGRES_PASSWORD: postgres
+          POSTGRES_DB: mobile_shop
+        ports:
+          - 5432:5432
+        options: >-
+          --health-cmd="pg_isready -U postgres"
+          --health-interval=10s
+          --health-timeout=5s
+          --health-retries=5
+
+    env:
+      DB_HOST: localhost
+      DB_NAME: mobile_shop
+      DB_USER: postgres
+      DB_PASSWORD: postgres
+      DB_PORT: 5432
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+          cache: "pip"
+
+      - name: Install dependencies
+        run: pip install -r requirements.txt
+
+      - name: Apply database schema
+        run: psql -h localhost -U postgres -d mobile_shop -f schema.sql
+        env:
+          PGPASSWORD: postgres
+
+      - name: Run tests
+        run: pytest
